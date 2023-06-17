@@ -1,13 +1,19 @@
 const collegeData = require('./collegeData')
 const fs = require("fs");
-console.log()
-const studentData = JSON.parse(fs.readFileSync(`/home/druz/Desktop/Seneca/sem2/web700/assignment3/data/students.json`, 'utf8'))
-const courseData = JSON.parse(fs.readFileSync('/home/druz/Desktop/Seneca/sem2/web700/assignment3/data/courses.json', 'utf8'))
+const path = require('path');
 
-const homeHTML = fs.readFileSync('/home/druz/Desktop/Seneca/sem2/web700/assignment3/templates/home.html', 'utf8')
-const aboutHTML = fs.readFileSync('/home/druz/Desktop/Seneca/sem2/web700/assignment3/templates/about.html', 'utf8')
-const htmlDemoHTML = fs.readFileSync('/home/druz/Desktop/Seneca/sem2/web700/assignment3/templates/htmlDemo.html', 'utf8')
-const error404 = fs.readFileSync('/home/druz/Desktop/Seneca/sem2/web700/assignment3/templates/ERROR_404.html', 'utf8')
+
+const filePath = (dirPath) => {
+    return path.join(__dirname, dirPath);
+}
+
+const studentData = JSON.parse(fs.readFileSync(filePath('../data/students.json'), 'utf8'))
+const courseData = JSON.parse(fs.readFileSync(filePath('../data/courses.json'), 'utf8'))
+
+const homeHTML = fs.readFileSync(filePath('../templates/home.html'), 'utf8')
+const aboutHTML = fs.readFileSync(filePath('../templates/about.html'), 'utf8')
+const htmlDemoHTML = fs.readFileSync(filePath('../templates/htmlDemo.html'), 'utf8')
+const error404 = fs.readFileSync(filePath('../templates/ERROR_404.html'), 'utf8')
 
 const collegeObj = new collegeData(studentData, courseData)
 

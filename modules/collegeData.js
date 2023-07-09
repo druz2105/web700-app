@@ -1,10 +1,12 @@
 const fs = require('fs');
+const {writeStudentsFile} = require("../utils/utils");
 
 class CollegeData {
     constructor(students, courses) {
         this.students = students;
         this.courses = courses;
     }
+
 
     getAllStudents() {
         return new Promise((resolve, reject) => {
@@ -62,6 +64,34 @@ class CollegeData {
             }
         });
     }
+
+    addStudent(data) {
+        return new Promise((resolve, reject) => {
+            if (data) {
+                const studentNum = this.students.length + 1
+                const isTA = data.TA.toUpperCase() === "ON"
+                data.studentNum = studentNum
+                const studentData = {
+                    studentNum: studentNum,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    email: data.email,
+                    addressStreet: data.addressStreet,
+                    addressCity: data.addressCity,
+                    addressProvince: data.addressProvince,
+                    TA: isTA,
+                    status: data.status,
+                    course: data.course
+                }
+                this.students.push(studentData)
+                writeStudentsFile(this.students)
+                resolve(data)
+            } else {
+                reject('No results returned');
+            }
+        });
+    }
 }
+
 
 module.exports = CollegeData

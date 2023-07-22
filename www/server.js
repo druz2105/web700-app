@@ -11,12 +11,44 @@
 
 const {
     getAllStudentsView, getStudentDetailView, getAllTAsView, getAllCourseView, getHomeView, getAboutView,
-    getHTMLDemoView, getError404View, getStudentsFormView, createStudentsView
+    getHTMLDemoView, getError404View, getStudentsFormView, createStudentsView, getCourseDetailView, updateStudentData
 } = require("../modules/views");
-const morgan = require("morgan")();
 const express = require('express')
 const bodyParser = require("body-parser");
 const app = express()
+const exphbs = require('express-handlebars');
+const path = require("path");
+
+
+const templatesDir = path.join(__dirname.replace("www", "templates"));
+
+
+const handlebarsHelpers = {
+    navLink: function(url, options) {
+        return '<li' + ((url === app.locals.activeRoute) ? ' class="nav-item active" ' : ' class="nav-item" ') + '><a class="nav-link" href="' + url + '">' + options.fn(this) + '</a></li>';
+    },
+    equal: function(lvalue, rvalue, options) {
+        if (arguments.length < 3) throw new Error("Handlebars Helper equal needs 2 parameters");
+        if (lvalue !== (rvalue)) {
+            return options.inverse(this);
+        } else {
+            return options.fn(this);
+        }
+    }
+};
+
+
+app.engine('hbs', exphbs({ extname: 'hbs', layoutsDir: path.join(templatesDir, 'layouts'), defaultLayout: 'main', helpers: handlebarsHelpers }));
+app.set('views', templatesDir); // Set the "views" directory to the "templates" directory
+app.set('view engine', 'hbs');
+
+
+app.use(function (req, res, next) {
+    let route = req.path.substring(1);
+    app.locals.activeRoute = "/" + (isNaN(route.split('/')[1]) ? route.replace(/\/(?!.*)/, "") : route.replace(/\/(.*)/, ""));
+    console.log("app.locals.activeRoute", app.locals.activeRoute)
+    next();
+});
 
 const PORT = 8000
 // app.use(morgan)
@@ -28,8 +60,10 @@ app.get('/students', getAllStudentsView)
 app.get('/student/:num', getStudentDetailView)
 app.get('/students/add', getStudentsFormView)
 app.post('/students/add', createStudentsView)
+app.post('/student/update', updateStudentData)
 app.get('/tas', getAllTAsView)
 app.get('/courses', getAllCourseView)
+app.get('/course/:id', getCourseDetailView)
 
 app.get('/', getHomeView)
 app.get('/about', getAboutView)

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require("path");
+const {app} = require("../www/server");
 const filePath = (dirPath) => {
     return path.join(__dirname, dirPath);
 }

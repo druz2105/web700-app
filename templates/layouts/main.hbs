@@ -1,9 +1,12 @@
 <!DOCTYPE html>
+<!--suppress JSUnresolvedLibraryURL -->
 <html lang="en">
 <head>
-	<title>WEB700</title>
-	<meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>WEB700</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
     <link rel="stylesheet" href="/public/css/theme.css">
 </head>
 
@@ -17,10 +20,10 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-            <li class="nav-item active"><a class="nav-link" href="/about">About</a></li>
-            <li class="nav-item"><a class="nav-link" href="/htmlDemo">Html Demo</a></li>
-            <li class="nav-item"><a class="nav-link" href="/students/add">Add Students</a></li>
+            {{#navLink "/"}}Home{{/navLink}}
+            {{#navLink "/about"}}About{{/navLink}}
+            {{#navLink "/htmlDemo"}}Html Demo{{/navLink}}
+            {{#navLink "/students/add"}}Add Students{{/navLink}}
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item"><a class="nav-link" href="/students">Students</a></li>
@@ -29,20 +32,10 @@
         </ul>
     </div>
 </nav>
-
-<div class="container  md-5">
+<div class="container md-5">
     <div class="row">
         <main class="col-md-12">
-            <!-- Start your code here -->
-            <h1>Welcome to the About page</h1>
-            <p>This page provides information about myself and my journey as a student.</p>
-
-            <h2>About Me</h2>
-            <p>My name is Dhruvil Yogeshbhai Patel, and I am a student in the Business Information Technology program. I
-                am passionate about web development and learning HTML5 principles and techniques. This website showcases
-                my skills and knowledge in this field.</p>
-            <p>Feel free to explore the different sections and pages of this website to learn more!</p>
-            <!-- End your code here -->
+            {{{body}}}
         </main>
     </div>
 </div>
@@ -53,4 +46,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

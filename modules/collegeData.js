@@ -91,6 +91,42 @@ class CollegeData {
             }
         });
     }
+
+    getCourseById = (id) => {
+        return new Promise((resolve, reject) => {
+            const course = this.courses.find((course) => course.courseId === id);
+            if (course) {
+                resolve(course);
+            } else {
+                reject("query returned 0 results");
+            }
+        });
+    };
+
+    updateStudent(studentData) {
+        return new Promise((resolve, reject) => {
+            const index = this.students.findIndex((student) => student.studentNum === parseInt(studentData.studentNum));
+            if (index !== -1) {
+                this.students[index] = {
+                    ...this.students[index],
+                    firstName: studentData.firstName,
+                    lastName: studentData.lastName,
+                    email: studentData.email,
+                    addressStreet: studentData.addressStreet,
+                    addressCity: studentData.addressCity,
+                    addressProvince: studentData.addressProvince,
+                    TA: studentData.TA === 'on', // Convert checkbox data to boolean
+                    status: studentData.status,
+                    course: studentData.course,
+                };
+                writeStudentsFile(this.students)
+                resolve(parseInt(studentData.studentNum));
+            } else {
+                reject(new Error('Student not found'));
+            }
+        });
+    }
+
 }
 
 

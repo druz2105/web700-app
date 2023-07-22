@@ -12,33 +12,21 @@ const filePath = (dirPath) => {
     return path.join(__dirname, dirPath);
 }
 
-
-const homeHTML = fs.readFileSync(filePath('../templates/home.html'), 'utf8')
-const aboutHTML = fs.readFileSync(filePath('../templates/about.html'), 'utf8')
-const htmlDemoHTML = fs.readFileSync(filePath('../templates/htmlDemo.html'), 'utf8')
-const addStudentHTML = fs.readFileSync(filePath('../templates/addStudent.html'), 'utf8')
 const error404 = fs.readFileSync(filePath('../templates/ERROR_404.html'), 'utf8')
 
+
+
 const getHomeView = (req, res) => {
-    res.writeHead(200, {
-        'Content-type': 'text/html'
-    });
-    res.end(homeHTML);
+    res.render('home.hbs');
 }
 
 
 const getAboutView = (req, res) => {
-    res.writeHead(200, {
-        'Content-type': 'text/html'
-    });
-    res.end(aboutHTML);
+    res.render('about.hbs');
 }
 
 const getHTMLDemoView = (req, res) => {
-    res.writeHead(200, {
-        'Content-type': 'text/html'
-    });
-    res.end(htmlDemoHTML);
+    res.render('htmlDemo.hbs');
 }
 
 const getError404View = (req, res) => {
@@ -56,23 +44,23 @@ const getAllStudentsView = async (req, res) => {
             try {
                 const students = await collegeObj.getStudentsByCourse(course);
                 if (students.length > 0) {
-                    res.json(students);
+                    res.render('students', { students: students, message: "no results" });
                 } else {
-                    res.json({message: 'no results'});
+                    res.render('students', { students: undefined, message: "no results" });
                 }
             } catch (error) {
-                res.json({message: 'no results'});
+                res.render('students', { students: undefined, message: "no results" });
             }
         } else {
             const students = await collegeObj.getAllStudents();
             if (students.length > 0) {
-                res.json(students);
+                res.render('students', { students: students, message: "no results" });
             } else {
-                res.json({message: 'no results'});
+                res.render('students', { students: undefined, message: "no results" })
             }
         }
     } catch (error) {
-        res.json({message: 'no results'});
+        res.render('students', { students: undefined, message: "no results" })
     }
 }
 
@@ -97,12 +85,12 @@ const getAllCourseView = async (req, res) => {
         const collegeObj = initialize()
         const courses = await collegeObj.getCourses();
         if (courses.length > 0) {
-            res.json(courses);
+            res.render('courses.hbs', { courses: courses, message: "no results" });
         } else {
-            res.json({message: 'no results'});
+            res.render('courses.hbs', { courses: undefined, message: "no results" });
         }
     } catch (error) {
-        res.json({message: 'no results'});
+        res.render('courses.hbs', { courses: undefined, message: "no results" });
     }
 }
 
@@ -112,21 +100,19 @@ const getStudentDetailView = async (req, res) => {
     try {
         const collegeObj = initialize()
         const student = await collegeObj.getStudentByNum(num);
+        const courses = await collegeObj.getCourses();
         if (student) {
-            res.json(student);
+            res.render('student.hbs', { student: student, courses: courses });
         } else {
-            res.json({message: 'no results'});
+            res.render('student.hbs', { message: "Student not found" });
         }
     } catch (error) {
-        res.json({message: 'no results'});
+        res.render('student.hbs', { message: "Student not found" });
     }
 }
 
 const getStudentsFormView = async (req, res) => {
-    res.writeHead(200, {
-        'Content-type': 'text/html'
-    });
-    res.end(addStudentHTML);
+        res.render("addStudent.hbs");
 }
 
 const createStudentsView = async (req, res) => {
@@ -145,15 +131,41 @@ const createStudentsView = async (req, res) => {
     }
 }
 
+const getCourseDetailView = async (req, res) => {
+    const collegeObj = initialize()
+    const courseId = parseInt(req.params.id);
+    try {
+        const course = await collegeObj.getCourseById(courseId);
+        res.render('course.hbs', { course: course });
+    } catch (error) {
+        res.render('course.hbs', { message: error });
+    }
+}
+
+const updateStudentData = async (req, res) => {
+    const studentData = req.body;
+    const collegeObj = initialize()
+    try {
+        const studentId = await collegeObj.updateStudent(studentData)
+        res.redirect(`/student/${studentId}`);
+    } catch (error) {
+        res.render('student.hbs', { message: error });
+    }
+
+}
+
+
 module.exports = {
     getAllStudentsView,
     getAllCourseView,
     getAllTAsView,
     getStudentsFormView,
     createStudentsView,
+    updateStudentData,
     getStudentDetailView,
     getHomeView,
     getAboutView,
     getHTMLDemoView,
+    getCourseDetailView,
     getError404View
 }

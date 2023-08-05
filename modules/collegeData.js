@@ -1,61 +1,91 @@
-const Sequelize = require('sequelize');
-const dotenv = require('dotenv');
-dotenv.config();
-
-const sequelize = new Sequelize(process.env.DB_URL);
-
+const { Student, Course } = require('./models');
 
 class CollegeData {
-    constructor(students, courses) {
-        this.students = students;
-        this.courses = courses;
-    }
+    
 
     getAllStudents() {
-        return new Promise((resolve, reject) => {
-            reject();
-        });
-    }
-
-    getTAs() {
-        return new Promise((resolve, reject) => {
-            reject();
-        });
+        return Student.findAll()
+            .then(students => {
+                if (students.length === 0) {
+                    throw new Error("No results returned");
+                }
+                return students;
+            });
     }
 
     getCourses() {
-        return new Promise((resolve, reject) => {
-            reject();
-        });
+        return Course.findAll()
+            .then(courses => {
+                if (courses.length === 0) {
+                    throw new Error("No results returned");
+                }
+                return courses;
+            });
     }
 
     getStudentsByCourse(course) {
-        return new Promise((resolve, reject) => {
-            reject();
+        return Student.findAll({
+            where: {
+                course: course
+            }
+        })
+        .then(students => {
+            if (students.length === 0) {
+                throw new Error("No results returned");
+            }
+            return students;
         });
     }
 
     getStudentByNum(num) {
-        return new Promise((resolve, reject) => {
-            reject();
+        return Student.findAll({
+            where: {
+                studentNum: num
+            }
+        })
+        .then(students => {
+            if (students.length === 0) {
+                throw new Error("No results returned");
+            }
+            return students[0];
         });
     }
 
-    addStudent(data) {
-        return new Promise((resolve, reject) => {
-            reject();
-        });
-    }
+    addStudent(studentData) {
+        studentData.TA = !!studentData.TA; // Convert to boolean
+        for (const key in studentData) {
+            if (studentData[key] === "") {
+                studentData[key] = null;
+            }
+        }
 
-    getCourseById = (id) => {
-        return new Promise((resolve, reject) => {
-            reject();
-        });
-    };
+        return Student.create(studentData)
+            .then(() => {
+                return;
+            })
+            .catch(() => {
+                throw new Error("Unable to create student");
+            });
+    }
 
     updateStudent(studentData) {
-        return new Promise((resolve, reject) => {
-            reject();
+        studentData.TA = !!studentData.TA; // Convert to boolean
+        for (const key in studentData) {
+            if (studentData[key] === "") {
+                studentData[key] = null;
+            }
+        }
+
+        return Student.update(studentData, {
+            where: {
+                studentNum: studentData.studentNum
+            }
+        })
+        .then(() => {
+            return;
+        })
+        .catch(() => {
+            throw new Error("Unable to update student");
         });
     }
 }

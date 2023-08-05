@@ -46,7 +46,6 @@ app.set('view engine', 'hbs');
 app.use(function (req, res, next) {
     let route = req.path.substring(1);
     app.locals.activeRoute = "/" + (isNaN(route.split('/')[1]) ? route.replace(/\/(?!.*)/, "") : route.replace(/\/(.*)/, ""));
-    console.log("app.locals.activeRoute", app.locals.activeRoute)
     next();
 });
 

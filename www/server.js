@@ -11,7 +11,8 @@
 
 const {
     getAllStudentsView, getStudentDetailView, getAllTAsView, getAllCourseView, getHomeView, getAboutView,
-    getHTMLDemoView, getError404View, getStudentsFormView, createStudentsView, getCourseDetailView, updateStudentData
+    getHTMLDemoView, getError404View, getStudentsFormView, createStudentsView, getCourseDetailView, updateStudentData,
+    getCourseFormView, addCourseView, updateCourseView, deleteCourseById, deleteStudentData
 } = require("../modules/views");
 const express = require('express')
 const bodyParser = require("body-parser");
@@ -34,7 +35,13 @@ const handlebarsHelpers = {
         } else {
             return options.fn(this);
         }
-    }
+    },
+    ifCond: function(v1, v2, options) {
+        if (v1 === v2) {
+          return options.fn(this);
+        }
+        return options.inverse(this);
+      }
 };
 
 
@@ -60,8 +67,13 @@ app.get('/student/:num', getStudentDetailView)
 app.get('/students/add', getStudentsFormView)
 app.post('/students/add', createStudentsView)
 app.post('/student/update', updateStudentData)
+app.get('/student/delete/:studentNum', deleteStudentData)
 app.get('/tas', getAllTAsView)
 app.get('/courses', getAllCourseView)
+app.get('/courses/add', getCourseFormView)
+app.post('/courses/add', addCourseView)
+app.post('/courses/update', updateCourseView)
+app.get('/courses/delete/:id', deleteCourseById)
 app.get('/course/:id', getCourseDetailView)
 
 app.get('/', getHomeView)

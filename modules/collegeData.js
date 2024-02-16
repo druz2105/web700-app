@@ -110,7 +110,7 @@ class CollegeData {
             courseData[key] = null;
           }
         });
-        console.log(">>>>86", courseData);
+        let courseData = {}
         return new Promise((resolve, reject) => {
           Course.create(courseData)
             .then(() => {

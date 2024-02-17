@@ -110,7 +110,6 @@ class CollegeData {
             courseData[key] = null;
           }
         });
-        let courseData = {}
         return new Promise((resolve, reject) => {
           Course.create(courseData)
             .then(() => {
@@ -150,7 +149,7 @@ class CollegeData {
     
     return new Promise((resolve, reject) => {
         Course.update(courseData, {
-        where: { courseId: courseData.courseId }
+        where: { courseId: courseId }
         })
         .then(() => {
             resolve('Course updated successfully');

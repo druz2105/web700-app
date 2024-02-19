@@ -146,7 +146,8 @@ class CollegeData {
         courseData[key] = null;
         }
     });
-    
+    console.log("courseData:><", courseData)
+    console.log("courseData.courseId:><", courseData.courseId)
     return new Promise((resolve, reject) => {
         Course.update(courseData, {
         where: { courseId: courseData.courseId }

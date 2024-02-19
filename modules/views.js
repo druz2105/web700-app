@@ -198,7 +198,8 @@ const getCourseDetailView = async (req, res) => {
         if (!course) {
           res.status(404).send('Course Not Found');
         } else {
-          res.render('course', course);
+          console.log(course)
+          res.render('course', { course: course });
         }
       })
       .catch(() => {

@@ -149,7 +149,7 @@ class CollegeData {
     
     return new Promise((resolve, reject) => {
         Course.update(courseData, {
-        where: { courseId: courseId }
+        where: { courseId: courseData.courseId }
         })
         .then(() => {
             resolve('Course updated successfully');
